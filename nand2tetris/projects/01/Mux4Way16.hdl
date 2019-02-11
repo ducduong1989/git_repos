@@ -1,0 +1,295 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/Mux4Way16.hdl
+
+/**
+ * 4-way 16-bit multiplexor:
+ * out = a if sel == 00
+ *       b if sel == 01
+ *       c if sel == 10
+ *       d if sel == 11
+ */
+
+CHIP Mux4Way16 {
+    IN a[16], b[16], c[16], d[16], sel[2];
+    OUT out[16];
+
+    PARTS:
+    Not(in=sel[0], out=notsel0);
+	Not(in=sel[1], out=notsel1);
+	//Bit 0
+	//aAndNot(sel0)AndNot(sel1)
+	And(a=a[0], b=notsel0, out=w01);
+	And(a=w01, b=notsel1, out=w02);
+	//bAndNot(sel0)Andsel1
+	And(a=c[0], b=notsel0, out=w03);
+	And(a=w03, b= sel[1], out=w04);
+	//cAndsel0AndNot(sel1)
+	And(a=b[0], b=sel[0], out=w05);
+	And(a=w05, b= notsel1, out=w06);
+	//dAndsel0Andsel1
+	And(a=d[0], b=sel[0], out=w07);
+	And(a=w07, b= sel[1], out=w08);
+	//Or..Or..Or
+	Or(a=w02, b=w04, out=w09);
+	Or(a=w09, b=w06, out=temp00);
+	Or(a=temp00, b=w08, out=out[0]);
+
+	//Bit 1
+	//aAndNot(sel0)AndNot(sel1)
+	And(a=a[1], b=notsel0, out=w11);
+	And(a=w01, b=notsel1, out=w12);
+	//bAndNot(sel0)Andsel1
+	And(a=c[1], b=notsel0, out=w13);
+	And(a=w13, b= sel[1], out=w14);
+	//cAndsel0AndNot(sel1)
+	And(a=b[1], b=sel[0], out=w15);
+	And(a=w15, b= notsel1, out=w16);
+	//dAndsel0Andsel1
+	And(a=d[1], b=sel[0], out=w17);
+	And(a=w17, b= sel[1], out=w18);
+	//Or..Or..Or
+	Or(a=w12, b=w14, out=w19);
+	Or(a=w19, b=w16, out=temp10);
+	Or(a=temp10, b=w18, out=out[1]);
+
+	//Bit 2
+	//aAndNot(sel0)AndNot(sel1)
+	And(a=a[2], b=notsel0, out=w21);
+	And(a=w21, b=notsel1, out=w22);
+	//bAndNot(sel0)Andsel1
+	And(a=c[2], b=notsel0, out=w23);
+	And(a=w23, b= sel[1], out=w24);
+	//cAndsel0AndNot(sel1)
+	And(a=b[2], b=sel[0], out=w25);
+	And(a=w25, b= notsel1, out=w26);
+	//dAndsel0Andsel1
+	And(a=d[2], b=sel[0], out=w27);
+	And(a=w27, b= sel[1], out=w28);
+	//Or..Or..Or
+	Or(a=w22, b=w24, out=w29);
+	Or(a=w29, b=w26, out=temp20);
+	Or(a=temp20, b=w28, out=out[2]);
+
+	//Bit 3
+	And(a=a[3], b=notsel0, out=w31);
+	And(a=w31, b=notsel1, out=w32);
+	//bAndNot(sel0)Andsel1
+	And(a=c[3], b=notsel0, out=w33);
+	And(a=w33, b= sel[1], out=w34);
+	//cAndsel0AndNot(sel1)
+	And(a=b[3], b=sel[0], out=w35);
+	And(a=w35, b= notsel1, out=w36);
+	//dAndsel0Andsel1
+	And(a=d[3], b=sel[0], out=w37);
+	And(a=w37, b= sel[1], out=w38);
+	//Or..Or..Or
+	Or(a=w32, b=w34, out=w39);
+	Or(a=w39, b=w36, out=temp30);
+	Or(a=temp30, b=w38, out=out[3]);
+
+	//Bit 4
+	And(a=a[4], b=notsel0, out=w41);
+	And(a=w41, b=notsel1, out=w42);
+	//bAndNot(sel0)Andsel1
+	And(a=c[4], b=notsel0, out=w43);
+	And(a=w43, b= sel[1], out=w44);
+	//cAndsel0AndNot(sel1)
+	And(a=b[4], b=sel[0], out=w45);
+	And(a=w45, b= notsel1, out=w46);
+	//dAndsel0Andsel1
+	And(a=d[4], b=sel[0], out=w47);
+	And(a=w47, b= sel[1], out=w48);
+	//Or..Or..Or
+	Or(a=w42, b=w44, out=w49);
+	Or(a=w49, b=w46, out=temp40);
+	Or(a=temp40, b=w48, out=out[4]);
+
+	//Bit 5
+	And(a=a[5], b=notsel0, out=w51);
+	And(a=w51, b=notsel1, out=w52);
+	//bAndNot(sel0)Andsel1
+	And(a=c[5], b=notsel0, out=w53);
+	And(a=w53, b= sel[1], out=w54);
+	//cAndsel0AndNot(sel1)
+	And(a=b[5], b=sel[0], out=w55);
+	And(a=w55, b= notsel1, out=w56);
+	//dAndsel0Andsel1
+	And(a=d[5], b=sel[0], out=w57);
+	And(a=w57, b= sel[1], out=w58);
+	//Or..Or..Or
+	Or(a=w52, b=w54, out=w59);
+	Or(a=w59, b=w56, out=temp50);
+	Or(a=temp50, b=w58, out=out[5]);
+
+	//Bit 6
+	And(a=a[6], b=notsel0, out=w61);
+	And(a=w61, b=notsel1, out=w62);
+	//bAndNot(sel0)Andsel1
+	And(a=c[6], b=notsel0, out=w63);
+	And(a=w63, b= sel[1], out=w64);
+	//cAndsel0AndNot(sel1)
+	And(a=b[6], b=sel[0], out=w65);
+	And(a=w65, b= notsel1, out=w66);
+	//dAndsel0Andsel1
+	And(a=d[6], b=sel[0], out=w67);
+	And(a=w67, b= sel[1], out=w68);
+	//Or..Or..Or
+	Or(a=w62, b=w64, out=w69);
+	Or(a=w69, b=w66, out=temp60);
+	Or(a=temp60, b=w68, out=out[6]);
+
+	//Bit 7
+	And(a=a[7], b=notsel0, out=w71);
+	And(a=w71, b=notsel1, out=w72);
+	//bAndNot(sel0)Andsel1
+	And(a=c[7], b=notsel0, out=w73);
+	And(a=w73, b= sel[1], out=w74);
+	//cAndsel0AndNot(sel1)
+	And(a=b[7], b=sel[0], out=w75);
+	And(a=w75, b= notsel1, out=w76);
+	//dAndsel0Andsel1
+	And(a=d[7], b=sel[0], out=w77);
+	And(a=w77, b= sel[1], out=w78);
+	//Or..Or..Or
+	Or(a=w72, b=w74, out=w79);
+	Or(a=w79, b=w76, out=temp70);
+	Or(a=temp70, b=w78, out=out[7]);
+
+	//Bit 8
+	And(a=a[8], b=notsel0, out=w81);
+	And(a=w81, b=notsel1, out=w82);
+	//bAndNot(sel0)Andsel1
+	And(a=c[8], b=notsel0, out=w83);
+	And(a=w83, b= sel[1], out=w84);
+	//cAndsel0AndNot(sel1)
+	And(a=b[8], b=sel[0], out=w85);
+	And(a=w85, b= notsel1, out=w86);
+	//dAndsel0Andsel1
+	And(a=d[8], b=sel[0], out=w87);
+	And(a=w87, b= sel[1], out=w88);
+	//Or..Or..Or
+	Or(a=w82, b=w84, out=w89);
+	Or(a=w89, b=w86, out=temp80);
+	Or(a=temp80, b=w88, out=out[8]);
+
+	//Bit 9
+	And(a=a[9], b=notsel0, out=w91);
+	And(a=w91, b=notsel1, out=w92);
+	//bAndNot(sel0)Andsel1
+	And(a=c[9], b=notsel0, out=w93);
+	And(a=w93, b= sel[1], out=w94);
+	//cAndsel0AndNot(sel1)
+	And(a=b[9], b=sel[0], out=w95);
+	And(a=w95, b= notsel1, out=w96);
+	//dAndsel0Andsel1
+	And(a=d[9], b=sel[0], out=w97);
+	And(a=w97, b= sel[1], out=w98);
+	//Or..Or..Or
+	Or(a=w92, b=w94, out=w99);
+	Or(a=w99, b=w96, out=temp90);
+	Or(a=temp90, b=w98, out=out[9]);
+
+	//Bit 10
+	And(a=a[10], b=notsel0, out=w101);
+	And(a=w101, b=notsel1, out=w102);
+	//bAndNot(sel0)Andsel1
+	And(a=c[10], b=notsel0, out=w103);
+	And(a=w103, b= sel[1], out=w104);
+	//cAndsel0AndNot(sel1)
+	And(a=b[10], b=sel[0], out=w105);
+	And(a=w105, b= notsel1, out=w106);
+	//dAndsel0Andsel1
+	And(a=d[10], b=sel[0], out=w107);
+	And(a=w107, b= sel[1], out=w108);
+	//Or..Or..Or
+	Or(a=w102, b=w104, out=w109);
+	Or(a=w109, b=w106, out=temp100);
+	Or(a=temp100, b=w108, out=out[10]);
+
+	//Bit 11
+	And(a=a[11], b=notsel0, out=w111);
+	And(a=w111, b=notsel1, out=w112);
+	//bAndNot(sel0)Andsel1
+	And(a=c[11], b=notsel0, out=w113);
+	And(a=w113, b= sel[1], out=w114);
+	//cAndsel0AndNot(sel1)
+	And(a=b[11], b=sel[0], out=w115);
+	And(a=w115, b= notsel1, out=w116);
+	//dAndsel0Andsel1
+	And(a=d[11], b=sel[0], out=w117);
+	And(a=w117, b= sel[1], out=w118);
+	//Or..Or..Or
+	Or(a=w112, b=w114, out=w119);
+	Or(a=w119, b=w116, out=temp110);
+	Or(a=temp110, b=w118, out=out[11]);
+
+	//Bit 12
+	And(a=a[12], b=notsel0, out=w121);
+	And(a=w121, b=notsel1, out=w122);
+	//bAndNot(sel0)Andsel1
+	And(a=c[12], b=notsel0, out=w123);
+	And(a=w123, b= sel[1], out=w124);
+	//cAndsel0AndNot(sel1)
+	And(a=b[12], b=sel[0], out=w125);
+	And(a=w125, b= notsel1, out=w126);
+	//dAndsel0Andsel1
+	And(a=d[12], b=sel[0], out=w127);
+	And(a=w127, b= sel[1], out=w128);
+	//Or..Or..Or
+	Or(a=w122, b=w124, out=w129);
+	Or(a=w129, b=w126, out=temp120);
+	Or(a=temp120, b=w128, out=out[12]);
+
+	//Bit 13
+	And(a=a[13], b=notsel0, out=w131);
+	And(a=w131, b=notsel1, out=w132);
+	//bAndNot(sel0)Andsel1
+	And(a=c[13], b=notsel0, out=w133);
+	And(a=w133, b= sel[1], out=w134);
+	//cAndsel0AndNot(sel1)
+	And(a=b[13], b=sel[0], out=w135);
+	And(a=w135, b= notsel1, out=w136);
+	//dAndsel0Andsel1
+	And(a=d[13], b=sel[0], out=w137);
+	And(a=w137, b= sel[1], out=w138);
+	//Or..Or..Or
+	Or(a=w132, b=w134, out=w139);
+	Or(a=w139, b=w136, out=temp130);
+	Or(a=temp130, b=w138, out=out[13]);
+
+	//Bit 14
+	And(a=a[14], b=notsel0, out=w141);
+	And(a=w141, b=notsel1, out=w142);
+	//bAndNot(sel0)Andsel1
+	And(a=c[14], b=notsel0, out=w143);
+	And(a=w143, b= sel[1], out=w144);
+	//cAndsel0AndNot(sel1)
+	And(a=b[14], b=sel[0], out=w145);
+	And(a=w145, b= notsel1, out=w146);
+	//dAndsel0Andsel1
+	And(a=d[14], b=sel[0], out=w147);
+	And(a=w147, b= sel[1], out=w148);
+	//Or..Or..Or
+	Or(a=w142, b=w144, out=w149);
+	Or(a=w149, b=w146, out=temp140);
+	Or(a=temp140, b=w148, out=out[14]);
+
+	//Bit 15
+	And(a=a[15], b=notsel0, out=w151);
+	And(a=w151, b=notsel1, out=w152);
+	//bAndNot(sel0)Andsel1
+	And(a=c[15], b=notsel0, out=w153);
+	And(a=w153, b= sel[1], out=w154);
+	//cAndsel0AndNot(sel1)
+	And(a=b[15], b=sel[0], out=w155);
+	And(a=w155, b= notsel1, out=w156);
+	//dAndsel0Andsel1
+	And(a=d[15], b=sel[0], out=w157);
+	And(a=w157, b= sel[1], out=w158);
+	//Or..Or..Or
+	Or(a=w152, b=w154, out=w159);
+	Or(a=w159, b=w156, out=temp150);
+	Or(a=temp150, b=w158, out=out[15]);
+}
